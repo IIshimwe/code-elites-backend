@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "build": "babel --copy-files src --out-dir dist",
-    "start": "nodemon --exec babel-node src/app.js",
+    "start": "node dist/app.js",
+    "start:dev": "nodemon --exec babel-node src/app.js",
     "test": "jest --watchAll --verbose"
   },
   "author": "ISHIMWE Isaac",

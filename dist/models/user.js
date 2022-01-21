@@ -1,10 +1,20 @@
 "use strict";
 
-const Joi = require('joi');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.User = void 0;
+exports.validate = validateUser;
 
-const mongoose = require('mongoose');
+var _joi = _interopRequireDefault(require("joi"));
 
-const User = mongoose.model('User', new mongoose.Schema({
+var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
+
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const userSchema = new _mongoose.default.Schema({
   name: {
     type: String,
     required: true,
@@ -24,16 +34,23 @@ const User = mongoose.model('User', new mongoose.Schema({
     minlength: 5,
     maxlength: 1024
   }
-}));
+});
+
+userSchema.methods.generateAuthToken = function () {
+  return _jsonwebtoken.default.sign({
+    _id: this._id
+  }, process.env.CAPSTONE_SECRET_KEY);
+};
+
+const User = _mongoose.default.model('User', userSchema);
+
+exports.User = User;
 
 function validateUser(user) {
   const schema = {
-    name: Joi.string().min(5).max(50).required(),
-    email: Joi.string().min(5).max(255).required().email(),
-    password: Joi.string().min(5).max(255).required()
+    name: _joi.default.string().min(5).max(50).required(),
+    email: _joi.default.string().min(5).max(255).required().email(),
+    password: _joi.default.string().min(5).max(255).required()
   };
-  return Joi.validate(user, schema);
+  return _joi.default.validate(user, schema);
 }
-
-exports.User = User;
-exports.validate = validateUser;
