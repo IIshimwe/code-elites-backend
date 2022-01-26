@@ -11,26 +11,26 @@ router.post('/', async (req, res) => {
     const query = new Querie(pick(req.body, ['fullname', 'email', 'msg']));
     await query.save();
 
-    res.send('Message has been sent');
+    res.json(query);
 });
 
 router.get('/', autho, async (req, res) => {
     const queries = await Querie.find();
-    res.send(queries);
+    res.json(queries);
 });
 
 router.get('/:id', autho, async (req, res) => {
     const query = await Querie.findById(req.params.id);
     if (!query) return res.status(404).send('Sorry! Message with the given ID was not found.');
 
-    res.send(query);
+    res.json(query);
 });
 
 router.delete('/:id', autho, async (req, res) => {
     const query = await Querie.findByIdAndRemove(req.params.id);
     if (!query) return res.status(404).send('Sorry! Message with the given ID was not found.');
 
-    res.send('Message deleted successfully');
+    res.json(query);
 });
 
 export default router;

@@ -14,12 +14,13 @@ router.post('/', autho, async (req, res) => {
     article = new Article(pick(req.body, ['title', 'author', 'content']));
     await article.save();
 
-    res.send('Article created successfully');
+    res.json(article);
 });
 
 router.get('/', async (req, res) => {
     const articles = await Article.find();
-    res.send(articles);
+
+    res.json(articles);
 });
 
 router.get('/:id', async (req, res) => {
@@ -27,9 +28,8 @@ router.get('/:id', async (req, res) => {
 
     if (!article) return res.status(404).send('The article with the given ID was not found.');
 
-    res.send(article);
+    res.json(article);
 });
-
 
 router.put('/:id', autho, async (req, res) => {
     const { error } = validate(req.body);
@@ -41,7 +41,7 @@ router.put('/:id', autho, async (req, res) => {
 
     if (!article) return res.status(404).send('The article with the given ID was not found.');
 
-    res.send('Article updated successfully');
+    res.json(article);
 });
 
 router.delete('/:id', autho, async (req, res) => {
@@ -49,7 +49,7 @@ router.delete('/:id', autho, async (req, res) => {
 
     if (!article) return res.status(404).send('The article with the given ID was not found.');
 
-    res.send('Article deleted successfully');
+    res.json(article);
 });
 
 export default router;
