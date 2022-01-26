@@ -10,11 +10,11 @@ module.exports = function (app) {
     app.use(cookieParser());
 
     // Articles endpoints
-    app.use('/api/blogs', articles);
+    app.use('/blogs', articles);
     // Queries endpoint
     app.use('/contact', query);
 
     // Authentication endpoints
-    app.use('/api/users', users);
-    app.use('/api/auth', auth);
+    app.use('/users', users);
+    app.use('/auth', auth);
 };
