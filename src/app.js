@@ -1,8 +1,10 @@
 require('dotenv/config');
 import('express-async-errors');
-
+import cors from 'cors';
 import express from 'express';
+
 const app = express();
+app.use(cors());
 
 require('./startup/routes')(app);
 require('./startup/db')();
