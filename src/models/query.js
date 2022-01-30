@@ -23,7 +23,7 @@ const Querie = mongoose.model('Querie', contactSchema);
 
 function validateContactMe(userQuery) {
     const schema = {
-        fullname: Joi.string().min(10).max(255).required(),
+        fullname: Joi.string().min(5).max(255).required(),
         email: Joi.string().min(5).max(50).required().email(),
         msg: Joi.string().max(500).required()
     };

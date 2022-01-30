@@ -1,13 +1,17 @@
-require('dotenv/config');
+import('dotenv/config');
 import('express-async-errors');
 import cors from 'cors';
 import express from 'express';
+import routes from './startup/routes';
+import db from './startup/db';
 
 const app = express();
 app.use(cors());
+routes(app);
+db();
 
-require('./startup/routes')(app);
-require('./startup/db')();
+
+// require('./startup/db')();
 
 
 const port = process.env.PORT || 8000;

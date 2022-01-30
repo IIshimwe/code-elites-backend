@@ -1,10 +1,24 @@
-import autho from '../middlewares/autho';
+import auth from '../middlewares/auth';
 import { pick } from 'lodash';
 import { Article, validate } from '../models/article';
 import express from 'express';
 const router = express.Router();
+import multer from 'multer';
 
-router.post('/', autho, async (req, res) => {
+// const storage = multer.diskStorage({});
+
+// const fileFilter = (req, file, cb) => {
+//     if (file.mimetype.startsWith('image')) {
+//         cb(null, true);
+//     } else {
+//         cb('invalid image file!', false);
+//     }
+// };
+// const uploads = multer({ storage, fileFilter });
+
+// uploads.single('articleImage'),
+
+router.post('/', auth, async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -31,7 +45,7 @@ router.get('/:id', async (req, res) => {
     res.json(article);
 });
 
-router.put('/:id', autho, async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -44,7 +58,7 @@ router.put('/:id', autho, async (req, res) => {
     res.json(article);
 });
 
-router.delete('/:id', autho, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const article = await Article.findByIdAndRemove(req.params.id);
 
     if (!article) return res.status(404).send('The article with the given ID was not found.');

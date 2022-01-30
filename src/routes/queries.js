@@ -1,7 +1,7 @@
 import { pick } from 'lodash';
 import { Querie, validate } from '../models/query';
 import express from 'express';
-import autho from '../middlewares/autho';
+import auth from '../middlewares/auth';
 const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -14,21 +14,21 @@ router.post('/', async (req, res) => {
     res.json(query);
 });
 
-router.get('/', autho, async (req, res) => {
+router.get('/', auth, async (req, res) => {
     const queries = await Querie.find();
     res.json(queries);
 });
 
-router.get('/:id', autho, async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     const query = await Querie.findById(req.params.id);
-    if (!query) return res.status(404).send('Sorry! Message with the given ID was not found.');
+    if (!query) return res.status(404).json({ message: 'Sorry! Message with the given ID was not found.' });
 
     res.json(query);
 });
 
-router.delete('/:id', autho, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const query = await Querie.findByIdAndRemove(req.params.id);
-    if (!query) return res.status(404).send('Sorry! Message with the given ID was not found.');
+    if (!query) return res.status(404).json({ message: 'Sorry! Message with the given ID was not found.' });
 
     res.json(query);
 });

@@ -5,7 +5,7 @@ import users from '../routes/users.js';
 import { json } from 'express';
 import cookieParser from 'cookie-parser';
 
-module.exports = function (app) {
+export default function (app) {
     app.use(json());
     app.use(cookieParser());
 
@@ -17,4 +17,4 @@ module.exports = function (app) {
     // Authentication endpoints
     app.use('/users', users);
     app.use('/auth', auth);
-};
+}

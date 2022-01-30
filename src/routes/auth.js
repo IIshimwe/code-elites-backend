@@ -1,4 +1,4 @@
-import('dotenv/config');
+import 'dotenv/config';
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
 import { User } from '../models/user';
@@ -6,14 +6,15 @@ import express from 'express';
 const router = express.Router();
 
 router.post('/', async (req, res) => {
+
     const { error } = validate(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
     let user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).send('Invalid email or password');
+    if (!user) return res.status(400).json({ message: 'Invalid email or password' });
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) return res.status(400).send('Invalid email or password');
+    if (!validPassword) return res.status(400).json({ message: 'Invalid email or password' });
 
     if (!process.env.CAPSTONE_SECRET_KEY) {
         console.error('FATAL ERROR: secretKey is not defined');
@@ -21,7 +22,7 @@ router.post('/', async (req, res) => {
     }
 
     const token = user.generateAuthToken();
-    res.send(token);
+    res.json({ token: token });
     // const maxAge = 3 * 60 * 60 * 24;
     // res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
     // next();
