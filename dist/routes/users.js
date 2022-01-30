@@ -25,7 +25,9 @@ router.post('/', async (req, res) => {
   let user = await _user.User.findOne({
     email: req.body.email
   });
-  if (user) return res.status(400).send('User already regisered');
+  if (user) return res.status(400).json({
+    message: 'User already regisered'
+  });
   user = new _user.User((0, _lodash.pick)(req.body, ['name', 'email', 'password']));
   const salt = await _bcrypt.default.genSalt(10);
   user.password = await _bcrypt.default.hash(req.body.password, salt);

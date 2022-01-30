@@ -3,7 +3,6 @@ import { pick } from 'lodash';
 import { Article, validate } from '../models/article';
 import express from 'express';
 const router = express.Router();
-import multer from 'multer';
 
 // const storage = multer.diskStorage({});
 

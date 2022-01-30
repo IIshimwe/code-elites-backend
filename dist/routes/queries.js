@@ -11,7 +11,7 @@ var _query = require("../models/query");
 
 var _express = _interopRequireDefault(require("express"));
 
-var _autho = _interopRequireDefault(require("../middlewares/autho"));
+var _auth = _interopRequireDefault(require("../middlewares/auth"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24,21 +24,25 @@ router.post('/', async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
   const query = new _query.Querie((0, _lodash.pick)(req.body, ['fullname', 'email', 'msg']));
   await query.save();
-  res.send('Message has been sent');
+  res.json(query);
 });
-router.get('/', _autho.default, async (req, res) => {
+router.get('/', _auth.default, async (req, res) => {
   const queries = await _query.Querie.find();
-  res.send(queries);
+  res.json(queries);
 });
-router.get('/:id', _autho.default, async (req, res) => {
+router.get('/:id', _auth.default, async (req, res) => {
   const query = await _query.Querie.findById(req.params.id);
-  if (!query) return res.status(404).send('Sorry! Message with the given ID was not found.');
-  res.send(query);
+  if (!query) return res.status(404).json({
+    message: 'Sorry! Message with the given ID was not found.'
+  });
+  res.json(query);
 });
-router.delete('/:id', _autho.default, async (req, res) => {
+router.delete('/:id', _auth.default, async (req, res) => {
   const query = await _query.Querie.findByIdAndRemove(req.params.id);
-  if (!query) return res.status(404).send('Sorry! Message with the given ID was not found.');
-  res.send('Message deleted successfully');
+  if (!query) return res.status(404).json({
+    message: 'Sorry! Message with the given ID was not found.'
+  });
+  res.json(query);
 });
 var _default = router;
 exports.default = _default;

@@ -38,7 +38,7 @@ exports.Querie = Querie;
 
 function validateContactMe(userQuery) {
   const schema = {
-    fullname: _joi.default.string().min(10).max(255).required(),
+    fullname: _joi.default.string().min(5).max(255).required(),
     email: _joi.default.string().min(5).max(50).required().email(),
     msg: _joi.default.string().max(500).required()
   };
