@@ -20,7 +20,7 @@ const articleSchema = new mongoose.Schema({
     content: {
         type: String,
         required: true,
-        maxlength: 1024
+        maxlength: 5000
     }
 }, { timestamps: true });
 
@@ -30,7 +30,7 @@ function validateBlog(article) {
     const schema = {
         title: Joi.string().min(10).max(255).required(),
         author: Joi.string().min(5).max(50).required(),
-        content: Joi.string().min(10).max(1024).required()
+        content: Joi.string().min(10).max(5000).required()
     };
 
     return Joi.validate(article, schema);
